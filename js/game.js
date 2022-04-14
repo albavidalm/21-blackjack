@@ -6,6 +6,7 @@ let playerPoints = 0;
 let computerPoints = 0;
 
 const btnTake = document.querySelector("#btnTake");
+const divPlayerCards = document.querySelector("#player-cards");
 const htmlPoints = document.querySelectorAll("small");
 
 //Function to create a deck and shuffle it later ------------
@@ -49,4 +50,9 @@ btnTake.addEventListener("click", () => {
   const card = takeCard();
   playerPoints = playerPoints + valueCard(card);
   htmlPoints[0].innerText = playerPoints;
+
+  const imgCard = document.createElement("img");
+  imgCard.src = `assets/${card}.png`;
+  imgCard.classList.add("carta");
+  divPlayerCards.append(imgCard);
 });
