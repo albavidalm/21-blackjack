@@ -2,6 +2,12 @@ let deck = [];
 const types = ["C", "D", "H", "S"];
 const figures = ["A", "J", "Q", "K"];
 
+let playerPoints = 0;
+let computerPoints = 0;
+
+const btnTake = document.querySelector("#btnTake");
+const htmlPoints = document.querySelectorAll("small");
+
 //Function to create a deck and shuffle it later ------------
 const createDeck = () => {
   for (let i = 2; i <= 10; i++) {
@@ -29,8 +35,6 @@ const takeCard = () => {
     throw "There are no cards left in deck";
   }
   const card = deck.pop();
-  console.log(deck);
-  console.log(card);
   return card;
 };
 
@@ -40,5 +44,9 @@ const valueCard = (card) => {
   return isNaN(value) ? (value === "A" ? 11 : 10) : parseInt(value);
 };
 
-const value = valueCard(takeCard());
-console.log({ value });
+//Events ------------
+btnTake.addEventListener("click", () => {
+  const card = takeCard();
+  playerPoints = playerPoints + valueCard(card);
+  htmlPoints[0].innerText = playerPoints;
+});
