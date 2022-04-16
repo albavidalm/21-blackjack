@@ -8,9 +8,14 @@ let computerPoints = 0;
 const btnTake = document.querySelector("#btnTake");
 const btnStop = document.querySelector("#btnStop");
 const btnNew = document.querySelector("#btnNew");
+const modalClose = document.querySelector(".modal__close");
 const divPlayerCards = document.querySelector("#player-cards");
 const divComputerCards = document.querySelector("#computer-cards");
 const htmlPoints = document.querySelectorAll("small");
+
+const modalSection = document.querySelector(".modal__section");
+const modalTitle = document.querySelector(".modal__title");
+const modalImg = document.querySelector(".modal__img");
 
 //Function to create a deck and shuffle it later ------------
 const createDeck = () => {
@@ -66,13 +71,21 @@ const computerTurn = (earnedPoints) => {
 
   setTimeout(() => {
     if (computerPoints === earnedPoints) {
-      alert("Nobody wins");
+      modalSection.classList.remove("modal--hide");
+      modalTitle.innerText = "Nobody wins";
+      modalImg.src = "assets/draw.gif";
     } else if (earnedPoints > 21) {
-      alert("You loose player 1");
+      modalSection.classList.remove("modal--hide");
+      modalTitle.innerText = "Computer wins";
+      modalImg.src = "assets/lose.gif";
     } else if (computerPoints > 21) {
-      alert("You win player 1");
+      modalSection.classList.remove("modal--hide");
+      modalTitle.innerText = "You win Player 1";
+      modalImg.src = "assets/win.gif";
     } else {
-      alert("Computer wins");
+      modalSection.classList.remove("modal--hide");
+      modalTitle.innerText = "Computer wins";
+      modalImg.src = "assets/lose.gif";
     }
   }, 30);
 };
@@ -118,4 +131,8 @@ btnNew.addEventListener("click", () => {
   htmlPoints[1].innerText = 0;
   divPlayerCards.innerHTML = "";
   divComputerCards.innerHTML = "";
+});
+
+modalClose.addEventListener("click", () => {
+  modalSection.classList.add("modal--hide");
 });
