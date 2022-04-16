@@ -55,4 +55,11 @@ btnTake.addEventListener("click", () => {
   imgCard.src = `assets/${card}.png`;
   imgCard.classList.add("carta");
   divPlayerCards.append(imgCard);
+
+  if (playerPoints > 21) {
+    console.warn("Has perdido");
+    btnTake.disabled = true;
+  } else if (playerPoints === 21) {
+    console.warn("Has llegado a 21");
+  }
 });
