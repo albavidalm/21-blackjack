@@ -6,7 +6,9 @@ let playerPoints = 0;
 let computerPoints = 0;
 
 const btnTake = document.querySelector("#btnTake");
+const btnStop = document.querySelector("#btnStop");
 const divPlayerCards = document.querySelector("#player-cards");
+const divComputerCards = document.querySelector("#computer-cards");
 const htmlPoints = document.querySelectorAll("small");
 
 //Function to create a deck and shuffle it later ------------
@@ -45,6 +47,24 @@ const valueCard = (card) => {
   return isNaN(value) ? (value === "A" ? 11 : 10) : parseInt(value);
 };
 
+//Function for the computer turn ------------
+const computerTurn = (earnedPoints) => {
+  do {
+    const card = takeCard();
+    computerPoints = computerPoints + valueCard(card);
+    htmlPoints[1].innerText = computerPoints;
+
+    const imgCard = document.createElement("img");
+    imgCard.src = `assets/${card}.png`;
+    imgCard.classList.add("carta");
+    divComputerCards.append(imgCard);
+
+    if (earnedPoints > 21) {
+      break;
+    }
+  } while (computerPoints < earnedPoints && earnedPoints <= 21);
+};
+
 //Events ------------
 btnTake.addEventListener("click", () => {
   const card = takeCard();
@@ -59,7 +79,18 @@ btnTake.addEventListener("click", () => {
   if (playerPoints > 21) {
     console.warn("Has perdido");
     btnTake.disabled = true;
+    btnStop.disabled = true;
+    computerTurn(playerPoints);
   } else if (playerPoints === 21) {
     console.warn("Has llegado a 21");
+    btnTake.disabled = true;
+    btnStop.disabled = true;
+    computerTurn(playerPoints);
   }
+});
+
+btnStop.addEventListener("click", () => {
+  computerTurn(playerPoints);
+  btnStop.disabled = true;
+  btnTake.disabled = true;
 });
