@@ -7,6 +7,7 @@ let computerPoints = 0;
 
 const btnTake = document.querySelector("#btnTake");
 const btnStop = document.querySelector("#btnStop");
+const btnNew = document.querySelector("#btnNew");
 const divPlayerCards = document.querySelector("#player-cards");
 const divComputerCards = document.querySelector("#computer-cards");
 const htmlPoints = document.querySelectorAll("small");
@@ -26,7 +27,6 @@ const createDeck = () => {
   }
 
   deck = _.shuffle(deck);
-  console.log(deck);
   return deck;
 };
 
@@ -63,6 +63,18 @@ const computerTurn = (earnedPoints) => {
       break;
     }
   } while (computerPoints < earnedPoints && earnedPoints <= 21);
+
+  setTimeout(() => {
+    if (computerPoints === earnedPoints) {
+      alert("Nobody wins");
+    } else if (earnedPoints > 21) {
+      alert("You loose player 1");
+    } else if (computerPoints > 21) {
+      alert("You win player 1");
+    } else {
+      alert("Computer wins");
+    }
+  }, 30);
 };
 
 //Events ------------
@@ -93,4 +105,17 @@ btnStop.addEventListener("click", () => {
   computerTurn(playerPoints);
   btnStop.disabled = true;
   btnTake.disabled = true;
+});
+
+btnNew.addEventListener("click", () => {
+  deck = [];
+  createDeck();
+  btnStop.disabled = false;
+  btnTake.disabled = false;
+  playerPoints = 0;
+  computerPoints = 0;
+  htmlPoints[0].innerText = 0;
+  htmlPoints[1].innerText = 0;
+  divPlayerCards.innerHTML = "";
+  divComputerCards.innerHTML = "";
 });
