@@ -1,8 +1,8 @@
 html,
 body {
-  margin: 0;
   background-color: #2f4f30;
   color: #ffffff;
+  margin: 0;
 }
 
 .title {
@@ -14,10 +14,10 @@ body {
 }
 
 .carta {
-  width: 10rem;
-  position: relative;
   left: 6.25rem;
   margin-left: -4.7rem;
+  position: relative;
+  width: 10rem;
 }
 
 #player-cards,
@@ -26,32 +26,32 @@ body {
 }
 
 .modal__section {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   background-color: rgba(0, 0, 0, 0.572);
+  bottom: 0;
   display: flex;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
   z-index: 1111;
 }
 
 .modal__container {
+  align-items: center;
+  background-color: #fff;
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
-  width: 90%;
-  background-color: #fff;
   margin: auto;
-  max-width: 600px;
   max-height: 90%;
-  border-radius: 6px;
+  max-width: 600px;
   padding: 3em 2.5em;
-  align-items: center;
+  width: 90%;
 }
 
 .modal__close {
-  border-radius: 50%;
   align-self: flex-end;
+  border-radius: 50%;
   margin-bottom: 2rem;
 }
 
@@ -61,8 +61,8 @@ body {
 }
 
 .modal__img {
-  width: 90%;
   max-width: 250px;
+  width: 90%;
 }
 
 .modal--hide {
