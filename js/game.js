@@ -1,53 +1,62 @@
-(() => {
+const bjModule = (() => {
   "use strict";
 
   let deck = [];
-  const types = ["C", "D", "H", "S"];
-  const figures = ["A", "J", "Q", "K"];
+  const types = ["C", "D", "H", "S"],
+    figures = ["A", "J", "Q", "K"];
 
-  let playerPoints = 0;
-  let computerPoints = 0;
+  let playersPoints = [];
 
-  const btnTake = document.querySelector("#btnTake");
-  const btnStop = document.querySelector("#btnStop");
-  const btnNew = document.querySelector("#btnNew");
+  const btnTake = document.querySelector("#btnTake"),
+    btnStop = document.querySelector("#btnStop"),
+    btnNew = document.querySelector("#btnNew");
 
-  const divPlayerCards = document.querySelector("#player-cards");
-  const divComputerCards = document.querySelector("#computer-cards");
-  const htmlPoints = document.querySelectorAll(".points");
+  const divPlayersCards = document.querySelectorAll(".divCards"),
+    htmlPoints = document.querySelectorAll(".points");
 
-  const modalClose = document.querySelector(".modal__close");
-  const modalSection = document.querySelector(".modal__section");
-  const modalTitle = document.querySelector(".modal__title");
-  const modalImg = document.querySelector(".modal__img");
+  const modalClose = document.querySelector(".modal__close"),
+    modalSection = document.querySelector(".modal__section"),
+    modalTitle = document.querySelector(".modal__title"),
+    modalImg = document.querySelector(".modal__img");
+
+  //Function to start game -----------
+  const startGame = (numPlayers = 2) => {
+    deck = createDeck();
+    playersPoints = [];
+    for (let i = 0; i < numPlayers; i++) {
+      playersPoints.push(0);
+    }
+
+    htmlPoints.forEach((el) => (el.innerText = 0));
+    htmlPoints.forEach((el) => (el.style.color = "#fff"));
+    divPlayersCards.forEach((el) => (el.innerHTML = ""));
+
+    btnStop.disabled = false;
+    btnTake.disabled = false;
+  };
 
   //Function to create a deck and shuffle it later ------------
   const createDeck = () => {
+    deck = [];
     for (let i = 2; i <= 10; i++) {
       for (let type of types) {
         deck.push(i + type);
       }
     }
-
     for (let type of types) {
       for (let figure of figures) {
         deck.push(figure + type);
       }
     }
-
-    deck = _.shuffle(deck);
-    return deck;
+    return _.shuffle(deck);
   };
-
-  createDeck();
 
   //Function to take a card ------------
   const takeCard = () => {
     if (deck.length === 0) {
       throw "There are no cards left in deck";
     }
-    const card = deck.pop();
-    return card;
+    return deck.pop();
   };
 
   //Function to calculate card value ------------
@@ -56,22 +65,17 @@
     return isNaN(value) ? (value === "A" ? 11 : 10) : parseInt(value);
   };
 
-  //Function for the computer turn ------------
-  const computerTurn = (earnedPoints) => {
-    do {
-      const card = takeCard();
-      computerPoints = computerPoints + valueCard(card);
-      htmlPoints[1].innerText = computerPoints;
+  //Function to create card ------------
+  const createCard = (card, turn) => {
+    const imgCard = document.createElement("img");
+    imgCard.src = `assets/${card}.png`;
+    imgCard.classList.add("carta");
+    divPlayersCards[turn].append(imgCard);
+  };
 
-      const imgCard = document.createElement("img");
-      imgCard.src = `assets/${card}.png`;
-      imgCard.classList.add("carta");
-      divComputerCards.append(imgCard);
-
-      if (earnedPoints > 21) {
-        break;
-      }
-    } while (computerPoints < earnedPoints && earnedPoints <= 21);
+  //Function to check the winner
+  const checkWinner = () => {
+    const [earnedPoints, computerPoints] = playersPoints;
 
     setTimeout(() => {
       if (computerPoints === earnedPoints) {
@@ -99,18 +103,33 @@
         htmlPoints[0].style.color = "#B70027";
         htmlPoints[1].style.color = "#222272";
       }
-    }, 30);
+    }, 100);
+  };
+
+  //Function to accumulate points ------------
+  const accumulatePoints = (card, turn) => {
+    playersPoints[turn] = playersPoints[turn] + valueCard(card);
+    htmlPoints[turn].innerText = playersPoints[turn];
+    return playersPoints[turn];
+  };
+
+  //Function for the computer turn ------------
+  const computerTurn = (earnedPoints) => {
+    let computerPoints = 0;
+    do {
+      const card = takeCard();
+      computerPoints = accumulatePoints(card, playersPoints.length - 1);
+      createCard(card, playersPoints.length - 1);
+    } while (computerPoints < earnedPoints && earnedPoints <= 21);
+    checkWinner();
   };
 
   //Events ------------
   btnTake.addEventListener("click", () => {
     const card = takeCard();
-    playerPoints = playerPoints + valueCard(card);
-    htmlPoints[0].innerText = playerPoints;
-    const imgCard = document.createElement("img");
-    imgCard.src = `assets/${card}.png`;
-    imgCard.classList.add("carta");
-    divPlayerCards.append(imgCard);
+    const playerPoints = accumulatePoints(card, 0);
+
+    createCard(card, 0);
 
     if (playerPoints > 21) {
       btnTake.disabled = true;
@@ -124,27 +143,20 @@
   });
 
   btnStop.addEventListener("click", () => {
-    computerTurn(playerPoints);
     btnStop.disabled = true;
     btnTake.disabled = true;
+    computerTurn(playersPoints[0]);
   });
 
   btnNew.addEventListener("click", () => {
-    deck = [];
-    createDeck();
-    btnStop.disabled = false;
-    btnTake.disabled = false;
-    playerPoints = 0;
-    computerPoints = 0;
-    htmlPoints[0].innerText = 0;
-    htmlPoints[1].innerText = 0;
-    htmlPoints[0].style.color = "#fff";
-    htmlPoints[1].style.color = "#fff";
-    divPlayerCards.innerHTML = "";
-    divComputerCards.innerHTML = "";
+    startGame();
   });
 
   modalClose.addEventListener("click", () => {
     modalSection.classList.add("modal--hide");
   });
+
+  return {
+    newGame: startGame,
+  };
 })();
