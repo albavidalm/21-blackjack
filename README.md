@@ -42,7 +42,7 @@ Starts Player 1 who receives as many cards as user wants by clicking on the "New
 
 ### Links
 
-- Code: [https://github1s.com/albavidalm/21-blackjack/](https://albavidalm.github.io/21-blackjack/)
+- Code: [https://github1s.com/albavidalm/21-blackjack](https://github1s.com/albavidalm/21-blackjack)
 - Live: [https://albavidalm.github.io/21-blackjack/](https://albavidalm.github.io/21-blackjack/)
 
 ## My process
