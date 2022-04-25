@@ -11,7 +11,7 @@ Starts Player 1 who receives as many cards as user wants by clicking on the "New
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
-  - [Provided wireframes](#provided-wireframes)
+  - [Wireframes](#wireframes)
   - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
@@ -36,7 +36,7 @@ Starts Player 1 who receives as many cards as user wants by clicking on the "New
 
 - Create a Module Pattern to encapsulate all the application logic of the game and make all the variables and functions only be visible inside the module.
 
-### Provided wireframes
+### Wireframes
 
 ![](assets/wireframe.gif)
 
